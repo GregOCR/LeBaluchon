@@ -24,6 +24,7 @@
 	<array>
 		<string>RobotoCondensed-Light.ttf</string>
 		<string>Roboto-Regular.ttf</string>
+		<string>RobotoMono-VariableFont_wght.ttf</string>
 		<string>digital-7 (mono italic).ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>

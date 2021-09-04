@@ -7,11 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		370A6F1E26E1F58D001074DC /* DateTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370A6F1D26E1F58D001074DC /* DateTools.swift */; };
 		372E10D926DCE25000967626 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372E10D826DCE25000967626 /* Extension.swift */; };
+		37527FE026DF926B00A693BE /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37527FDF26DF926B00A693BE /* MainTabBarController.swift */; };
+		37527FE226DF933F00A693BE /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37527FE126DF933F00A693BE /* WeatherViewController.swift */; };
+		37527FE626DF94A400A693BE /* WeatherCitiesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37527FE526DF94A400A693BE /* WeatherCitiesTableViewController.swift */; };
+		37527FE826DF94DD00A693BE /* TranslateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37527FE726DF94DD00A693BE /* TranslateViewController.swift */; };
+		37527FEA26DF953500A693BE /* TranslateTranslatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37527FE926DF953500A693BE /* TranslateTranslatorViewController.swift */; };
+		37527FEC26DF956D00A693BE /* TranslateSentencesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37527FEB26DF956D00A693BE /* TranslateSentencesTableViewController.swift */; };
+		37527FEE26DF95A900A693BE /* CurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37527FED26DF95A900A693BE /* CurrencyViewController.swift */; };
+		37527FF526E0B3E400A693BE /* RobotoMono-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37527FF426E0B3E400A693BE /* RobotoMono-VariableFont_wght.ttf */; };
+		37527FF726E0C76000A693BE /* printer.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 37527FF626E0C76000A693BE /* printer.mp3 */; };
 		37755A7526DE81C700979C08 /* digital-7 (mono italic).ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37755A7426DE81C700979C08 /* digital-7 (mono italic).ttf */; };
 		37B6068526DB1E7B004A1538 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B6068426DB1E7B004A1538 /* AppDelegate.swift */; };
 		37B6068726DB1E7B004A1538 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B6068626DB1E7B004A1538 /* SceneDelegate.swift */; };
-		37B6068926DB1E7B004A1538 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B6068826DB1E7B004A1538 /* ViewController.swift */; };
 		37B6068C26DB1E7B004A1538 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37B6068A26DB1E7B004A1538 /* Main.storyboard */; };
 		37B6068E26DB1E7C004A1538 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37B6068D26DB1E7C004A1538 /* Assets.xcassets */; };
 		37B6069126DB1E7C004A1538 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37B6068F26DB1E7C004A1538 /* LaunchScreen.storyboard */; };
@@ -20,12 +29,21 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		370A6F1D26E1F58D001074DC /* DateTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTools.swift; sourceTree = "<group>"; };
 		372E10D826DCE25000967626 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		37527FDF26DF926B00A693BE /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		37527FE126DF933F00A693BE /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
+		37527FE526DF94A400A693BE /* WeatherCitiesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCitiesTableViewController.swift; sourceTree = "<group>"; };
+		37527FE726DF94DD00A693BE /* TranslateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateViewController.swift; sourceTree = "<group>"; };
+		37527FE926DF953500A693BE /* TranslateTranslatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateTranslatorViewController.swift; sourceTree = "<group>"; };
+		37527FEB26DF956D00A693BE /* TranslateSentencesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateSentencesTableViewController.swift; sourceTree = "<group>"; };
+		37527FED26DF95A900A693BE /* CurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewController.swift; sourceTree = "<group>"; };
+		37527FF426E0B3E400A693BE /* RobotoMono-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-VariableFont_wght.ttf"; sourceTree = "<group>"; };
+		37527FF626E0C76000A693BE /* printer.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = printer.mp3; sourceTree = "<group>"; };
 		37755A7426DE81C700979C08 /* digital-7 (mono italic).ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "digital-7 (mono italic).ttf"; sourceTree = "<group>"; };
 		37B6068126DB1E7B004A1538 /* LeBaluchon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LeBaluchon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37B6068426DB1E7B004A1538 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37B6068626DB1E7B004A1538 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		37B6068826DB1E7B004A1538 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		37B6068B26DB1E7B004A1538 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		37B6068D26DB1E7C004A1538 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		37B6069026DB1E7C004A1538 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -45,6 +63,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		37527FEF26DFFCEC00A693BE /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				37527FF626E0C76000A693BE /* printer.mp3 */,
+			);
+			path = sounds;
+			sourceTree = "<group>";
+		};
 		37B6067826DB1E7B004A1538 = {
 			isa = PBXGroup;
 			children = (
@@ -75,6 +101,7 @@
 		37B6069826DB1EE2004A1538 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				370A6F1D26E1F58D001074DC /* DateTools.swift */,
 				372E10D826DCE25000967626 /* Extension.swift */,
 			);
 			path = Model;
@@ -92,7 +119,13 @@
 		37B6069A26DB1EF3004A1538 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				37B6068826DB1E7B004A1538 /* ViewController.swift */,
+				37527FDF26DF926B00A693BE /* MainTabBarController.swift */,
+				37527FE126DF933F00A693BE /* WeatherViewController.swift */,
+				37527FE526DF94A400A693BE /* WeatherCitiesTableViewController.swift */,
+				37527FE726DF94DD00A693BE /* TranslateViewController.swift */,
+				37527FE926DF953500A693BE /* TranslateTranslatorViewController.swift */,
+				37527FEB26DF956D00A693BE /* TranslateSentencesTableViewController.swift */,
+				37527FED26DF95A900A693BE /* CurrencyViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -100,6 +133,7 @@
 		37B6069B26DB1F16004A1538 /* SysFiles */ = {
 			isa = PBXGroup;
 			children = (
+				37527FEF26DFFCEC00A693BE /* sounds */,
 				37B6069C26DB30D8004A1538 /* fonts */,
 				37B6069226DB1E7C004A1538 /* Info.plist */,
 				37B6068D26DB1E7C004A1538 /* Assets.xcassets */,
@@ -113,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				37755A7426DE81C700979C08 /* digital-7 (mono italic).ttf */,
+				37527FF426E0B3E400A693BE /* RobotoMono-VariableFont_wght.ttf */,
 				37B6069D26DB30FA004A1538 /* RobotoCondensed-Light.ttf */,
 				37B6069F26DB312E004A1538 /* Roboto-Regular.ttf */,
 			);
@@ -178,9 +213,11 @@
 			files = (
 				37B6069126DB1E7C004A1538 /* LaunchScreen.storyboard in Resources */,
 				37B6068E26DB1E7C004A1538 /* Assets.xcassets in Resources */,
+				37527FF526E0B3E400A693BE /* RobotoMono-VariableFont_wght.ttf in Resources */,
 				37B606A026DB312E004A1538 /* Roboto-Regular.ttf in Resources */,
 				37B6069E26DB30FA004A1538 /* RobotoCondensed-Light.ttf in Resources */,
 				37B6068C26DB1E7B004A1538 /* Main.storyboard in Resources */,
+				37527FF726E0C76000A693BE /* printer.mp3 in Resources */,
 				37755A7526DE81C700979C08 /* digital-7 (mono italic).ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -192,10 +229,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37B6068926DB1E7B004A1538 /* ViewController.swift in Sources */,
+				370A6F1E26E1F58D001074DC /* DateTools.swift in Sources */,
 				37B6068526DB1E7B004A1538 /* AppDelegate.swift in Sources */,
+				37527FEA26DF953500A693BE /* TranslateTranslatorViewController.swift in Sources */,
+				37527FE226DF933F00A693BE /* WeatherViewController.swift in Sources */,
 				37B6068726DB1E7B004A1538 /* SceneDelegate.swift in Sources */,
+				37527FEC26DF956D00A693BE /* TranslateSentencesTableViewController.swift in Sources */,
+				37527FE026DF926B00A693BE /* MainTabBarController.swift in Sources */,
 				372E10D926DCE25000967626 /* Extension.swift in Sources */,
+				37527FE626DF94A400A693BE /* WeatherCitiesTableViewController.swift in Sources */,
+				37527FE826DF94DD00A693BE /* TranslateViewController.swift in Sources */,
+				37527FEE26DF95A900A693BE /* CurrencyViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
