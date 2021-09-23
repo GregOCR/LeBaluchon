@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<string>fr_FR</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -20,13 +20,10 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>RobotoCondensed-Light.ttf</string>
-		<string>Roboto-Regular.ttf</string>
-		<string>RobotoMono-VariableFont_wght.ttf</string>
-		<string>digital-7 (mono italic).ttf</string>
-	</array>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Géolocalisez-vous pour automatiquement connaître la météo sur votre emplacement actuel.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Géolocalisez-vous pour automatiquement connaître la météo sur votre emplacement actuel.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -57,9 +54,9 @@
 		<string>armv7</string>
 	</array>
 	<key>UIStatusBarHidden</key>
-	<true/>
+	<false/>
 	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleDefault</string>
+	<string>UIStatusBarStyleLightContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -71,7 +68,12 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>digital-7 (mono italic).ttf</string>
+		<string>Roboto-Regular.ttf</string>
+		<string>RobotoCondensed-Light.ttf</string>
+		<string>RobotoMono-VariableFont_wght.ttf</string>
+	</array>
 </dict>
 </plist>

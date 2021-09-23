@@ -2,15 +2,13 @@
 //  AppDelegate.swift
 //  LeBaluchon
 //
-//  Created by Greg on 29/08/2021.
+//  Created by Greg on 04/09/2021.
 //
- 
+
 import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
