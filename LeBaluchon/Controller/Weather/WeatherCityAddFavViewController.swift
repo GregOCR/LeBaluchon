@@ -26,6 +26,10 @@ class WeatherCityAddFavViewController: UIViewController {
         cityTextField.addTarget(self, action: #selector(textFieldDidChange), for: UIControl.Event.editingChanged)
     }
     
+    @IBAction func dismiss() {
+        dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func addFavButton(_ sender: UIButton) {
         if cityTextField.text! != "" {
             self.notValidatedLabel.isHidden = true

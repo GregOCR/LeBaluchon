@@ -14,10 +14,10 @@ protocol CitySelectionDelegate: AnyObject {
 class WeatherCitiesListController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     private var cities: [City] = [
-        .init(title: "Paris", country: .init(iso: "FR")),
-        .init(title: "New York", country: .init(iso: "US"))
+        .init(name: "Paris", longitude: 2.3488, latitude: 48.8534, country: .init(name: "FRANCE", isoCode: "FR")),
+        .init(name: "New York", longitude: -74.006, latitude: 40.7143, country: .init(name: "ÉTATS-UNIS", isoCode: "US")),
+        .init(name: "Strasbourg", longitude: 7.743, latitude: 48.5834, country: .init(name: "FRANCE", isoCode: "FR"))
     ]
-    
     
     weak var selectionDelegate: CitySelectionDelegate!
     
@@ -60,7 +60,6 @@ class WeatherCitiesListController: UIViewController, UITableViewDataSource, UITa
         }
         
         let city = cities[indexPath.row]
-        
         cell.configure(city: city)
         
         return cell

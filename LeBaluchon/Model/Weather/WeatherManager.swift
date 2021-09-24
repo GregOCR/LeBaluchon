@@ -30,17 +30,23 @@ protocol WeatherManagerDelegate: AnyObject {
 class WeatherManager {
     weak var delegate: WeatherManagerDelegate?
     
-    let APIurl = "https://api.openweathermap.org/data/2.5/weather?appid=87989bfd88e94b4e65c48b71104226db&lang=fr&units=metric&q="
-    
     func fetchWeather(for city: City) {
-        guard let url = getFetchWeatherUrl(city: city) else {
+        guard let url = getFetchWeatherUrl(longitude: city.longitude, latitude: city.latitude) else {
             delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueToInvalidUrl))
             return
         }
         performRequest(with: url)
     }
     
-    private func getFetchWeatherUrl(city: City) -> URL? {
+    func fetchWeatherWithCoordinates(longitude: Double, latitude: Double) {
+        guard let url = getFetchWeatherUrl(longitude: longitude, latitude: latitude) else {
+            delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueToInvalidUrl))
+            return
+        }
+        performRequest(with: url)
+    }
+    
+    private func getFetchWeatherUrl(longitude: Double, latitude: Double) -> URL? {
         var urlComponents = URLComponents()
         
         urlComponents.scheme = "https"
@@ -50,7 +56,8 @@ class WeatherManager {
             .init(name: "appid", value: "87989bfd88e94b4e65c48b71104226db"),
             .init(name: "lang", value: "fr"),
             .init(name: "units", value: "metric"),
-            .init(name: "q", value: "\(city.title),\(city.country.iso)")
+            .init(name: "lon", value: "\(longitude)"),
+            .init(name: "lat", value: "\(latitude)")
         ]
         
         return urlComponents.url
@@ -80,12 +87,9 @@ class WeatherManager {
                 self?.delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueToFailingJsonDecodding))
                 return
             }
-            
             self?.delegate?.didFetchWeatherResult(weatherResult: .success(mappedModel))
-            
         }
         task.resume()
-        
     }
     
     private func mapResponseModel(decodedData: WeatherData) -> WeatherModel? {

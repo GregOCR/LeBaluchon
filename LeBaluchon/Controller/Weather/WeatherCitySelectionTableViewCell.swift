@@ -7,26 +7,15 @@
 
 import UIKit
 
-
-struct City {
-    let title: String
-    let country: Country
-}
-
-struct Country {
-    let iso: String
-}
-
-
 class WeatherCitySelectionTableViewCell: UITableViewCell {
 
-    @IBOutlet private weak var cityTitleLabel: UILabel!
-    @IBOutlet private weak var countryLabel: UILabel!
-    
-    
-    func configure(city: City) {
-        cityTitleLabel.text = city.title
-        countryLabel.text = city.country.iso
-    }
+    @IBOutlet private weak var cityNameLabel: UILabel!
+    @IBOutlet private weak var cityCountryIsoLabel: UILabel!
+    @IBOutlet private weak var cityCountryNameLabel: UILabel!
 
+    func configure(city: City) {
+        cityNameLabel.text = city.name
+        cityCountryIsoLabel.text = city.country.isoCode
+        cityCountryNameLabel.text = city.country.name
+    }
 }

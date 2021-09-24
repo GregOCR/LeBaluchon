@@ -46,12 +46,12 @@ class ConverterViewController: UIViewController, UIImagePickerControllerDelegate
 
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.ticketView.layer.shadowColor = #colorLiteral(red: 0.2605186105, green: 0.2605186105, blue: 0.2605186105, alpha: 1).cgColor
+        self.ticketView.layer.shadowColor = Color.darkConverterColor.cgColor
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.refreshDate()
-        tabBarController?.tabBar.barTintColor = UIColor.black
+        tabBarController?.tabBar.barTintColor = Color.darkConverterColor
     }
     
     var motionManager = CMMotionManager()

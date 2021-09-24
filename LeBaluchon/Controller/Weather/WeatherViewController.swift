@@ -35,6 +35,7 @@ final class WeatherViewController: UIViewController {
     
     private let weatherManager = WeatherManager()
     private let locationManager = CLLocationManager()
+    
     private let dateManager = DateManager.shared
     
     private var selectedCity: City? {
@@ -49,14 +50,8 @@ final class WeatherViewController: UIViewController {
     }
     
     private func updateCityLocalData() {
-        guard let selectedCity = selectedCity else { return }
-        setWeatherStackViewsComponentVisibility(isVisible: true)
-        cityIllustrationView.alpha = 0.5
-        localizeYourselfImageView.isHidden = true
-        whiteGradientImageView.isHidden = true
-        currentTemperatureLabel.text = "-"
-        cityButton.setTitle(selectedCity.title, for: .normal)
-        cityISOLabel.text = selectedCity.country.iso
+//        guard selectedCity != nil else { return }
+        weatherViewComponentsAreVisible(true)
     }
     
     private func fetchCityData() {
@@ -71,20 +66,18 @@ final class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setWeatherStackViewsComponentVisibility(isVisible: false)
         
-        cityIllustrationView.isHidden = false
-        localizeYourselfImageView.isHidden = false
+        weatherViewComponentsAreVisible(false)
         
         locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.requestLocation()
-        
         weatherManager.delegate = self
     }
     
-    private func setWeatherStackViewsComponentVisibility(isVisible: Bool) {
-        weatherStackViews.forEach { $0.isHidden = !isVisible }
+    private func weatherViewComponentsAreVisible(_ visibility: Bool) {
+        localizeYourselfImageView.isHidden = true
+        cityIllustrationView.alpha = 0.5
+        whiteGradientImageView.isHidden = true
+        weatherStackViews.forEach { $0.isHidden = !visibility }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,9 +85,16 @@ final class WeatherViewController: UIViewController {
         // set full current date to label in date view
         currentDateLabel.text = dateManager.getDateInformation(.FullCurrentDate).uppercased()
         // set dark color theme to the tab bar section
-        tabBarController?.tabBar.barTintColor = #colorLiteral(red: 0.06158964513, green: 0.08314602092, blue: 0.2463585805, alpha: 1)
+        tabBarController?.tabBar.barTintColor = Color.darkWeatherColor
     }
-   
+    
+    @IBAction func localizeButtonTap(_ sender: Any) {
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        locationManager.requestLocation()
+        updateCityLocalData()
+    }
+    
     @IBAction func cityToChooseButtonTap(_ sender: UIButton) {
         navigateToCitySelectionView()
     }
@@ -103,10 +103,6 @@ final class WeatherViewController: UIViewController {
         guard let selectionViewController = storyboard?.instantiateViewController(withIdentifier: "weatherCitiesList") as? WeatherCitiesListController else { return }
         selectionViewController.selectionDelegate = self
         present(selectionViewController, animated: true, completion: nil)
-    }
-    
-    @IBAction func currentLocationButton(_ sender: Any) {
-        print("geoLoc")
     }
     
     /*
@@ -121,7 +117,7 @@ final class WeatherViewController: UIViewController {
     
     
     private func displayAlert(error: WeatherManagerError) {
-        let alertController = UIAlertController(title: "error", message: error.message, preferredStyle: .alert)
+        let alertController = UIAlertController(title: "E R R 0 R", message: error.message, preferredStyle: .alert)
         let okAlertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(okAlertAction)
         present(alertController, animated: true, completion: nil)
@@ -137,6 +133,9 @@ extension WeatherViewController: WeatherManagerDelegate {
                 self?.displayAlert(error: error)
                 
             case .success(let weather):
+                self?.cityButton.setTitle(weather.cityName, for: .normal)
+                self?.cityISOLabel.text = weather.cityCountryID
+                self?.currentHumidityLabel.text = weather.todayHumidity
                 self?.currentWeatherDescriptionLabel.text = weather.currentDescription
                 self?.currentTemperatureLabel.text = weather.currentTemperature
                 self?.weatherPictoImage.image = UIImage(systemName: weather.weatherCaseStringImageID)
@@ -147,14 +146,19 @@ extension WeatherViewController: WeatherManagerDelegate {
                 self?.currentPressureLabel.text = weather.todayPressure
                 self?.currentHumidityLabel.text = weather.todayHumidity
             }
-            
         }
     }
 }
 
 extension WeatherViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-       
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {        
+        if let location = locations.last {
+            locationManager.stopUpdatingLocation()
+            let longitude = location.coordinate.longitude
+            let latitude = location.coordinate.latitude
+            weatherManager.fetchWeatherWithCoordinates(longitude: longitude, latitude: latitude)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -165,6 +169,5 @@ extension WeatherViewController: CLLocationManagerDelegate {
 extension WeatherViewController: CitySelectionDelegate {
     func didSelect(city: City) {
         self.selectedCity = city
-        //String(ISOcode.dropFirst().dropLast(ISOcode.count-3))
     }
 }

@@ -59,7 +59,7 @@ class TranslatorViewController: UIViewController, UITextViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         self.refreshDate()
-        tabBarController?.tabBar.barTintColor = #colorLiteral(red: 0.0623490223, green: 0.1894281492, blue: 0.2469544492, alpha: 1)
+        tabBarController?.tabBar.barTintColor = Color.darkTranslatorColor
     }
     
     @IBAction func sentenceSelectButtonTap(_ sender: UIButton) {

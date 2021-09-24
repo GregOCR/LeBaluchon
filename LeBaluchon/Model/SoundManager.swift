@@ -20,7 +20,6 @@ struct SoundManager {
     static func play(_ soundName: SoundType) {        
         let path = Bundle.main.path(forResource: soundName.rawValue, ofType:nil)!
         let url = URL(fileURLWithPath: path)
-        
         do {
             self.soundToPlay = try AVAudioPlayer(contentsOf: url)
             self.soundToPlay?.play()
