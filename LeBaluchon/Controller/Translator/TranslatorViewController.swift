@@ -5,6 +5,8 @@
 //  Created by Greg on 01/09/2021.
 //
 
+// comment arrêter une UIView.animate
+
 import UIKit
 import CoreMotion
 
@@ -51,21 +53,20 @@ class TranslatorViewController: UIViewController, UITextViewDelegate {
     }
     
     func refreshDate() {
-        self.currentDateLabel.text = dateManager.getDateInformation(.FullCurrentDate).uppercased()
+        self.currentDateLabel.text = dateManager.getFormattedDate(.FullCurrentDate).uppercased()
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-            self.currentDateLabel.text = self.dateManager.getDateInformation(.FullCurrentDate).uppercased()
+            self.currentDateLabel.text = self.dateManager.getFormattedDate(.FullCurrentDate).uppercased()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.refreshDate()
-        tabBarController?.tabBar.barTintColor = Color.darkTranslatorColor
     }
     
     @IBAction func sentenceSelectButtonTap(_ sender: UIButton) {
-        let selectionVC = storyboard?.instantiateViewController(withIdentifier: "sentenceList") as! TranslatorSentencesViewController
-        selectionVC.selectionDelegate = self
-        present(selectionVC, animated: true, completion: nil)
+        let translatorSentencesListStoryboard = storyboard?.instantiateViewController(withIdentifier: ElementIdentifier.named.translatorSentencesListStoryboard) as! TranslatorSentencesViewController
+        translatorSentencesListStoryboard.selectionDelegate = self
+        present(translatorSentencesListStoryboard, animated: true, completion: nil)
     }
     
     // hide keyboard when press ENTER key
@@ -78,16 +79,16 @@ class TranslatorViewController: UIViewController, UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == #colorLiteral(red: 0.3743489583, green: 0.6320441929, blue: 0.7486979167, alpha: 1).withAlphaComponent(0.5) {
+        if textView.textColor == Color.shared.mainTranslatorColor.withAlphaComponent(0.5) {
             textView.text = ""
-            textView.textColor = #colorLiteral(red: 0.0623490223, green: 0.1894281492, blue: 0.2469544492, alpha: 1)
+            textView.textColor = Color.shared.darkTranslatorColor
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = "Sélectionnez ou écrivez\nune phrase à traduire"
-            textView.textColor = #colorLiteral(red: 0.3743489583, green: 0.6320441929, blue: 0.7486979167, alpha: 1).withAlphaComponent(0.5)
+            textView.textColor = Color.shared.mainTranslatorColor.withAlphaComponent(0.5)
             textViewPlaceholder = ""
         } else {
             textViewPlaceholder = textView.text

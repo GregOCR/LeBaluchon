@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 protocol SentenceSelectionDelegate {
     func didSelection(sentence: String)
 }
@@ -32,23 +31,21 @@ class TranslatorSentencesViewController: UIViewController, UITableViewDataSource
         guard let indexPath = sentencesTableView.indexPathForRow(at: point) else {
             return
         }
-        sentences.remove(at: indexPath.row)
+        Sentences.shared.entries.remove(at: indexPath.row)
         self.sentencesTableView.deleteRows(at: [indexPath], with: .left)
     }
     
     @objc func selectFav(_ sender: UIAlertAction) {
         selectionDelegate?.didSelection(sentence: self.selectedFav)
         self.dismiss()
-        
     }
     
-   
     @objc func showFullSentence(_ sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: sentencesTableView)
         guard let indexPath = sentencesTableView.indexPathForRow(at: point) else {
             return
         }
-        self.selectedFav = sentences[indexPath.row]
+        self.selectedFav = Sentences.shared.entries[indexPath.row].content
         let alert = UIAlertController(title: "", message: self.selectedFav, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Sélectionner", style: UIAlertAction.Style.default, handler: self.selectFav(_:)))
         alert.addAction(UIAlertAction(title: "Autre", style: UIAlertAction.Style.cancel, handler: nil))
@@ -60,31 +57,29 @@ class TranslatorSentencesViewController: UIViewController, UITableViewDataSource
     }
     
     @IBAction func addRow(_ sender: UIButton) {
-        sentences.insert(contentsOf: ["Je voudrais une glace au melon, s'il-vous-plait."], at: 0)
+        Sentences.shared.entries.append(.init(content: "Pouvez-vous me donner l'heure, s'il-vous-plait ?"))
         self.sentencesTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
     }
     
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sentences.count
+        return Sentences.shared.entries.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "sentences")
+        let translatorSentenceCell = tableView.dequeueReusableCell(withIdentifier: ElementIdentifier.named.translatorSentenceCell)
         
-        if let view = cell?.contentView.viewWithTag(1) as? UIButton {
+        if let view = translatorSentenceCell?.contentView.viewWithTag(1) as? UIButton {
             view.addTarget(self, action: #selector(self.showFullSentence(_:)), for: .touchUpInside)
-               
         }
         
-        if let sentenceLabel = cell?.contentView.viewWithTag(2) as? UILabel {
-            sentenceLabel.text = sentences[indexPath.row]
+        if let sentenceLabel = translatorSentenceCell?.contentView.viewWithTag(2) as? UILabel {
+            sentenceLabel.text = Sentences.shared.entries[indexPath.row].content
         }
         
-        if let deleteButton = cell?.contentView.viewWithTag(3) as? UIButton {
+        if let deleteButton = translatorSentenceCell?.contentView.viewWithTag(3) as? UIButton {
             deleteButton.addTarget(self, action: #selector(deleteRow(_:)), for: .touchUpInside)
         }
-        return cell!
+        return translatorSentenceCell!
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -92,10 +87,9 @@ class TranslatorSentencesViewController: UIViewController, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectionDelegate?.didSelection(sentence: sentences[indexPath.row])
+        selectionDelegate?.didSelection(sentence: Sentences.shared.entries[indexPath.row].content)
         self.dismiss()
     }
-    
     
     /*
     // MARK: - Navigation

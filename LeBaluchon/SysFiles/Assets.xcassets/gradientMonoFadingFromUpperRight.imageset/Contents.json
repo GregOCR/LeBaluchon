@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "neutralGradientUpsideDown.pdf",
+      "filename" : "gradientMonoFadingFromUpperRight.pdf",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "neutralGradientUpsideDown-1.pdf",
+      "filename" : "gradientMonoFadingFromUpperRight-1.pdf",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "neutralGradientUpsideDown-2.pdf",
+      "filename" : "gradientMonoFadingFromUpperRight-2.pdf",
       "idiom" : "universal",
       "scale" : "3x"
     }

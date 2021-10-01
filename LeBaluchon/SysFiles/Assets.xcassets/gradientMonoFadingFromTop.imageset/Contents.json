@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "illusBillet.svg",
+      "filename" : "gradientMonoFadingFromTop.pdf",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "illusBillet-1.svg",
+      "filename" : "gradientMonoFadingFromTop-1.pdf",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "illusBillet-2.svg",
+      "filename" : "gradientMonoFadingFromTop-2.pdf",
       "idiom" : "universal",
       "scale" : "3x"
     }

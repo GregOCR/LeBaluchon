@@ -11,11 +11,11 @@ enum WeatherManagerError: Error {
     case couldNotFetchWeatherDueToInvalidUrl
     case couldNotFetchWeatherDueUnknownError
     case couldNotFetchWeatherDueToNoData
-    case couldNotFetchWeatherDueToFailingJsonDecodding
+    case couldNotFetchWeatherDueToFailingJsonDecoding
     
     var message: String {
         switch self {
-        case .couldNotFetchWeatherDueToFailingJsonDecodding: return "couldNotFetchWeatherDueToFailingJsonDecodding"
+        case .couldNotFetchWeatherDueToFailingJsonDecoding: return "couldNotFetchWeatherDueToFailingJsonDecoding"
         case .couldNotFetchWeatherDueToInvalidUrl: return "couldNotFetchWeatherDueToInvalidUrl"
         case .couldNotFetchWeatherDueToNoData: return "couldNotFetchWeatherDueToNoData"
         case .couldNotFetchWeatherDueUnknownError: return "couldNotFetchWeatherDueUnknownError"
@@ -24,26 +24,18 @@ enum WeatherManagerError: Error {
 }
 
 protocol WeatherManagerDelegate: AnyObject {
-    func didFetchWeatherResult(weatherResult: Result<WeatherModel, WeatherManagerError>)
+    func didFetchWeatherResult(weatherResult: Result<WeatherModel, WeatherManagerError>, localize: Bool)
 }
 
 class WeatherManager {
     weak var delegate: WeatherManagerDelegate?
     
-    func fetchWeather(for city: City) {
-        guard let url = getFetchWeatherUrl(longitude: city.longitude, latitude: city.latitude) else {
-            delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueToInvalidUrl))
-            return
-        }
-        performRequest(with: url)
-    }
-    
-    func fetchWeatherWithCoordinates(longitude: Double, latitude: Double) {
+    func fetchWeather(longitude: Double, latitude: Double, localize: Bool) {
         guard let url = getFetchWeatherUrl(longitude: longitude, latitude: latitude) else {
-            delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueToInvalidUrl))
+            delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueToInvalidUrl), localize: localize)
             return
         }
-        performRequest(with: url)
+        performRequest(with: url, localize: localize)
     }
     
     private func getFetchWeatherUrl(longitude: Double, latitude: Double) -> URL? {
@@ -63,55 +55,57 @@ class WeatherManager {
         return urlComponents.url
     }
     
-    private func performRequest(with url: URL) {
+    private func performRequest(with url: URL, localize: Bool) {
         
         let session = URLSession(configuration: .default)
         
         let task = session.dataTask(with: url) { [weak self] (data, response, error) in
             if error != nil {
-                self?.delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueUnknownError))
+                self?.delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueUnknownError), localize: localize)
                 return
             }
             
             guard let data = data else {
-                self?.delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueToNoData))
+                self?.delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueToNoData), localize: localize)
                 return
             }
             
             guard let decodedData = try? JSONDecoder().decode(WeatherData.self, from: data) else {
-                self?.delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueToFailingJsonDecodding))
+                self?.delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueToFailingJsonDecoding), localize: localize)
                 return
             }
             
             guard let mappedModel = self?.mapResponseModel(decodedData: decodedData) else {
-                self?.delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueToFailingJsonDecodding))
+                self?.delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueToFailingJsonDecoding), localize: localize)
                 return
             }
-            self?.delegate?.didFetchWeatherResult(weatherResult: .success(mappedModel))
+            self?.delegate?.didFetchWeatherResult(weatherResult: .success(mappedModel), localize: localize)
         }
         task.resume()
     }
     
     private func mapResponseModel(decodedData: WeatherData) -> WeatherModel? {
-        let cityName = decodedData.name
-        let cityCountryID = decodedData.sys.country
-        let timeZone = decodedData.timezone
+        let cityName = decodedData.cityName
+        let countryIsoCode = decodedData.system.countryIsoCode
+        let currentTime = decodedData.currentTime
+        let timeZone = decodedData.timeZone
         let weatherDescription = decodedData.weather[0].description
-        let weatherID = decodedData.weather[0].id
-        let minTemperature = decodedData.main.temperatureMin
-        let maxTemperature = decodedData.main.temperatureMax
-        let temperature = decodedData.main.temperature
-        let sunriseTime = decodedData.sys.sunrise
-        let sunsetTime = decodedData.sys.sunset
-        let pressure = decodedData.main.pressure
-        let humidity = decodedData.main.humidity
+        let weatherTypeCode = decodedData.weather[0].typeCode
+        let minTemperature = decodedData.furtherInfos.temperatureMin
+        let maxTemperature = decodedData.furtherInfos.temperatureMax
+        let temperature = decodedData.furtherInfos.temperature
+        let sunriseTime = decodedData.system.sunriseTime
+        let sunsetTime = decodedData.system.sunsetTime
+        let pressure = decodedData.furtherInfos.pressure
+        let humidity = decodedData.furtherInfos.humidity
         
         let weather = WeatherModel(
             cityName: cityName,
-            cityCountryID: cityCountryID,
+            countryIsoCode: countryIsoCode,
+            currentTime: currentTime,
             timeZone: timeZone,
             weatherDescription: weatherDescription,
-            weatherID: weatherID,
+            weatherTypeCode: weatherTypeCode,
             minTemperature: minTemperature,
             maxTemperature: maxTemperature,
             temperature: temperature,

@@ -7,9 +7,11 @@
 
 import AVFoundation
 
-struct SoundManager {
+class SoundManager {
+
+    static let shared = SoundManager()
     
-    static var soundToPlay: AVAudioPlayer?
+    private var soundToPlay: AVAudioPlayer?
     
     enum SoundType: String {
         case Printer = "printer.mp3"
@@ -17,22 +19,15 @@ struct SoundManager {
         case Woop = "woop.mp3"
     }
     
-    static func play(_ soundName: SoundType) {        
+    func play(_ soundName: SoundType) {
         let path = Bundle.main.path(forResource: soundName.rawValue, ofType:nil)!
         let url = URL(fileURLWithPath: path)
         do {
             self.soundToPlay = try AVAudioPlayer(contentsOf: url)
             self.soundToPlay?.play()
         } catch {
+            return
         }
     }
-    
-    static func stop() {
-        self.soundToPlay?.stop()
-    }
-    
-    static func initialize() {
-        self.play(.Woop)
-        self.stop()
-    }
 }
+

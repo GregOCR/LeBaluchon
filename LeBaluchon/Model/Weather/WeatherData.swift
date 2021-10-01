@@ -8,14 +8,24 @@
 import Foundation
 
 class WeatherData: Codable {
-    let name: String
-    let main: Main
+    let cityName: String
+    let currentTime: Int
+    let furtherInfos: FurtherInfos
     let weather: [Weather]
-    let sys: Sys
-    let timezone: Int
+    let system: System
+    let timeZone: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case cityName = "name"
+        case currentTime = "dt"
+        case furtherInfos = "main"
+        case weather = "weather"
+        case system = "sys"
+        case timeZone = "timezone"
+    }
 }
 
-class Main: Codable {
+class FurtherInfos: Codable {
     let temperature: Double
     let temperatureMin: Double
     let temperatureMax: Double
@@ -32,12 +42,23 @@ class Main: Codable {
 }
 
 class Weather: Codable {
-    let id: Int
+    let typeCode: Int
     let description: String
+    
+    enum CodingKeys: String, CodingKey {
+        case typeCode = "id"
+        case description = "description"
+    }
 }
 
-class Sys: Codable {
-    let country: String
-    let sunrise: Int
-    let sunset: Int
+class System: Codable {
+    let countryIsoCode: String
+    let sunriseTime: Int
+    let sunsetTime: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case countryIsoCode = "country"
+        case sunriseTime = "sunrise"
+        case sunsetTime = "sunset"
+    }
 }

@@ -10,10 +10,11 @@ import Foundation
 struct WeatherModel {
     
     let cityName: String
-    let cityCountryID: String
+    let countryIsoCode: String
+    let currentTime: Int
     let timeZone: Int
     let weatherDescription: String
-    let weatherID: Int
+    let weatherTypeCode: Int
     let minTemperature: Double
     let maxTemperature: Double
     let temperature: Double
@@ -23,7 +24,7 @@ struct WeatherModel {
     let humidity: Int
     
     var weatherCaseStringImageID: String {
-        switch self.weatherID {
+        switch self.weatherTypeCode {
         case 200...232:
             return "cloud.bolt"
         case 300...321:
@@ -59,6 +60,10 @@ struct WeatherModel {
     
     var currentTemperature: String {
         return String(Int(round(self.temperature)))
+    }
+    // returns if current city time is greater than city sunrise time AND less than city sunset time
+    var cityIsDayTime: Bool {
+        return (self.currentTime + self.timeZone) >= (self.sunriseTime + self.timeZone) && (self.currentTime + self.timeZone) <= (self.sunsetTime + self.timeZone)
     }
     
     var todaySunriseTime: String {

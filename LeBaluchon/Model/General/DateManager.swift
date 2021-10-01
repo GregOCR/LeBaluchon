@@ -14,25 +14,23 @@ class DateManager {
     enum DateType {
         case FullCurrentDate, CurrentUTCTime
     }
-
+    
+    // get date as String
     func getDate(withDateStyle dateStyle: DateFormatter.Style, withTimeStyle timeStyle: DateFormatter.Style) -> String {
-        // create the instance of the day to get the date
         let date = Date()
-        // create date formatter
+        
         let dateFormatter = DateFormatter()
-        // Set date/time styles
         dateFormatter.dateStyle = dateStyle
         dateFormatter.timeStyle = timeStyle
-        // set locale identifier as FR
         dateFormatter.locale = Locale(identifier: "fr")
-        // convert date format to string format
+        
         return dateFormatter.string(from: date)
     }
-
-    func getDateInformation(_ dateType: DateType) -> String {
+    // get formatted date information
+    func getFormattedDate(_ dateType: DateType) -> String {
         var dateStyle: DateFormatter.Style = .short
         var timeStyle: DateFormatter.Style = .none
-
+        
         switch dateType {
         case .FullCurrentDate:
             dateStyle = .full
@@ -42,6 +40,6 @@ class DateManager {
         
         let date = self.getDate(withDateStyle: dateStyle, withTimeStyle: timeStyle)
         
-        return String(date)
+        return String(date).uppercased()
     }
 }

@@ -11,7 +11,7 @@ protocol CityAddFavDelegate {
     func didValidated(city: String, ISOcode: String, country: String)
 }
 
-class WeatherCityAddFavViewController: UIViewController {
+class WeatherCityAddFavoriteViewController: UIViewController {
 
     @IBOutlet weak var cityTextField: UITextField!
     
@@ -19,6 +19,7 @@ class WeatherCityAddFavViewController: UIViewController {
     @IBOutlet weak var notValidatedLabel: UILabel!
     
     var addFavDelegate: CityAddFavDelegate!
+    var weatherViewController = WeatherViewController.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +56,7 @@ class WeatherCityAddFavViewController: UIViewController {
 
 }
 
-extension WeatherCityAddFavViewController: UITextFieldDelegate {
+extension WeatherCityAddFavoriteViewController: UITextFieldDelegate {
     
     @IBAction func searchPressed(_ sender: UIButton) {
         cityTextField.endEditing(true)

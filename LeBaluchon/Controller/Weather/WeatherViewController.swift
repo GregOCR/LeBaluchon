@@ -5,23 +5,26 @@
 //  Created by Greg on 01/09/2021.
 //
 
+// comment changer la couleur des éléments de  la tabView lorsque je clique sur une autre section
+
 import UIKit
 import CoreLocation
 
 final class WeatherViewController: UIViewController {
-    
+
     @IBOutlet private weak var currentDateLabel: UILabel!
-    @IBOutlet private weak var cityISOLabel: UILabel!
+    @IBOutlet private weak var countryIsoCodeLabel: UILabel!
     
     @IBOutlet private weak var cityIllustrationView: UIView!
     @IBOutlet private var weatherStackViews: [UIStackView]!
+    @IBOutlet weak var weatherInformationsComponentsStackView: UIStackView!
     @IBOutlet private weak var whiteGradientImageView: UIImageView!
     
     @IBOutlet private weak var localizeYourselfImageView: UIImageView!
     
     @IBOutlet private weak var weatherPictoImage: UIImageView!
     
-    @IBOutlet private weak var cityButton: UIButton!
+    @IBOutlet private weak var cityNameButton: UIButton!
     
     @IBOutlet private weak var currentWeatherDescriptionLabel: UILabel!
     @IBOutlet private weak var currentTemperatureLabel: UILabel!
@@ -32,11 +35,14 @@ final class WeatherViewController: UIViewController {
     @IBOutlet private weak var currentPressureLabel: UILabel!
     @IBOutlet private weak var currentHumidityLabel: UILabel!
     
+    static var shared = WeatherViewController()
     
     private let weatherManager = WeatherManager()
+    
     private let locationManager = CLLocationManager()
     
     private let dateManager = DateManager.shared
+    private let soundManager = SoundManager.shared
     
     private var selectedCity: City? {
         didSet {
@@ -45,18 +51,20 @@ final class WeatherViewController: UIViewController {
     }
     
     private func handleCitySelectionChange() {
-        updateCityLocalData()
         fetchCityData()
     }
     
     private func updateCityLocalData() {
 //        guard selectedCity != nil else { return }
-        weatherViewComponentsAreVisible(true)
+        switchWeatherViewComponentsToNormal()
+        
     }
     
     private func fetchCityData() {
         guard let selectedCity = selectedCity else { return }
-        weatherManager.fetchWeather(for: selectedCity)
+        weatherManager.fetchWeather(longitude: selectedCity.longitude, latitude: selectedCity.latitude, localize: false)
+        updateCityLocalData()
+
     }
     
     // set the color of the status bar content in white
@@ -66,43 +74,41 @@ final class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        weatherViewComponentsAreVisible(false)
+        tabBarController?.tabBarItem.image?.withTintColor(UIColor.red, renderingMode: .automatic)
+        print(tabBarItem.title!)
         
         locationManager.delegate = self
         weatherManager.delegate = self
     }
     
-    private func weatherViewComponentsAreVisible(_ visibility: Bool) {
+    private func switchWeatherViewComponentsToNormal() {
         localizeYourselfImageView.isHidden = true
         cityIllustrationView.alpha = 0.5
+        weatherInformationsComponentsStackView.alpha = 1
         whiteGradientImageView.isHidden = true
-        weatherStackViews.forEach { $0.isHidden = !visibility }
+        weatherStackViews.forEach { $0.isHidden = false }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+
         // set full current date to label in date view
-        currentDateLabel.text = dateManager.getDateInformation(.FullCurrentDate).uppercased()
-        // set dark color theme to the tab bar section
-        tabBarController?.tabBar.barTintColor = Color.darkWeatherColor
+        currentDateLabel.text = dateManager.getFormattedDate(.FullCurrentDate).uppercased()
     }
     
-    @IBAction func localizeButtonTap(_ sender: Any) {
-        locationManager.requestWhenInUseAuthorization()
+    @IBAction func localizeButtonTap(_ sender: UIButton) {        locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         locationManager.requestLocation()
         updateCityLocalData()
     }
     
-    @IBAction func cityToChooseButtonTap(_ sender: UIButton) {
+    @IBAction func cityNameButtonTap(_ sender: UIButton) {
         navigateToCitySelectionView()
     }
     
     private func navigateToCitySelectionView() {
-        guard let selectionViewController = storyboard?.instantiateViewController(withIdentifier: "weatherCitiesList") as? WeatherCitiesListController else { return }
-        selectionViewController.selectionDelegate = self
-        present(selectionViewController, animated: true, completion: nil)
+        guard let weatherCitiesListStoryboard = storyboard?.instantiateViewController(withIdentifier: ElementIdentifier.named.weatherCitiesListStoryboard) as? WeatherCitiesListController else { return }
+        weatherCitiesListStoryboard.selectionDelegate = self
+        present(weatherCitiesListStoryboard, animated: true, completion: nil)
     }
     
     /*
@@ -115,9 +121,8 @@ final class WeatherViewController: UIViewController {
      }
      */
     
-    
     private func displayAlert(error: WeatherManagerError) {
-        let alertController = UIAlertController(title: "E R R 0 R", message: error.message, preferredStyle: .alert)
+        let alertController = UIAlertController(title: "E R R 〇 R", message: error.message, preferredStyle: .alert)
         let okAlertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(okAlertAction)
         present(alertController, animated: true, completion: nil)
@@ -126,15 +131,20 @@ final class WeatherViewController: UIViewController {
 }
 
 extension WeatherViewController: WeatherManagerDelegate {
-    func didFetchWeatherResult(weatherResult: Result<WeatherModel, WeatherManagerError>) {
+    func didFetchWeatherResult(weatherResult: Result<WeatherModel, WeatherManagerError>, localize: Bool) {
         DispatchQueue.main.async { [weak self] in
             switch weatherResult {
             case .failure(let error):
                 self?.displayAlert(error: error)
                 
             case .success(let weather):
-                self?.cityButton.setTitle(weather.cityName, for: .normal)
-                self?.cityISOLabel.text = weather.cityCountryID
+                // IF fetch weather is localize, city name is json city name ELSE city name is local database city name
+                if localize == true {
+                    self?.cityNameButton.setTitle(weather.cityName, for: .normal)
+                } else {
+                    self?.cityNameButton.setTitle(self?.selectedCity?.name, for: .normal)
+                }
+                self?.countryIsoCodeLabel.text = weather.countryIsoCode
                 self?.currentHumidityLabel.text = weather.todayHumidity
                 self?.currentWeatherDescriptionLabel.text = weather.currentDescription
                 self?.currentTemperatureLabel.text = weather.currentTemperature
@@ -145,6 +155,11 @@ extension WeatherViewController: WeatherManagerDelegate {
                 self?.todaySunsetTimeLabel.text = weather.todaySunsetTime
                 self?.currentPressureLabel.text = weather.todayPressure
                 self?.currentHumidityLabel.text = weather.todayHumidity
+                if weather.cityIsDayTime {
+                    self?.weatherPictoImage.tintColor = UIColor.white
+                } else {
+                    self?.weatherPictoImage.tintColor = Color.shared.darkWeatherColor
+                }
             }
         }
     }
@@ -152,12 +167,13 @@ extension WeatherViewController: WeatherManagerDelegate {
 
 extension WeatherViewController: CLLocationManagerDelegate {
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {        
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
         if let location = locations.last {
             locationManager.stopUpdatingLocation()
             let longitude = location.coordinate.longitude
             let latitude = location.coordinate.latitude
-            weatherManager.fetchWeatherWithCoordinates(longitude: longitude, latitude: latitude)
+            weatherManager.fetchWeather(longitude: longitude, latitude: latitude, localize: true)
         }
     }
     

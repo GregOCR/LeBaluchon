@@ -55,14 +55,14 @@ class WeatherCitiesListController: UIViewController, UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "city") as? WeatherCitySelectionTableViewCell else {
+        guard let weatherCityCell = tableView.dequeueReusableCell(withIdentifier: ElementIdentifier.named.weatherCityCell) as? WeatherCitySelectionTableViewCell else {
             return UITableViewCell()
         }
         
         let city = cities[indexPath.row]
-        cell.configure(city: city)
-        
-        return cell
+        weatherCityCell.configure(city: city)
+            
+        return weatherCityCell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

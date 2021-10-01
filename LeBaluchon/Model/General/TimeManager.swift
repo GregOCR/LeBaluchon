@@ -8,7 +8,6 @@
 import Foundation
 
 struct TimeManager {
-    
     static func getTimeFromUnixTimestamp(_ unixTimestamp: Int) -> String {
         let date = NSDate(timeIntervalSince1970: TimeInterval(unixTimestamp))
         let dateFormatter = DateFormatter()

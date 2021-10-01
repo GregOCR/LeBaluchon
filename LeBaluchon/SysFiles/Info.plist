@@ -24,6 +24,14 @@
 	<string>Géolocalisez-vous pour automatiquement connaître la météo sur votre emplacement actuel.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Géolocalisez-vous pour automatiquement connaître la météo sur votre emplacement actuel.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>digital-7 (mono italic).ttf</string>
+		<string>Roboto-Regular.ttf</string>
+		<string>RobotoCondensed-Light.ttf</string>
+		<string>RobotoMono-VariableFont_wght.ttf</string>
+		<string>SF-Compact-Display-Regular.otf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -67,13 +75,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIAppFonts</key>
-	<array>
-		<string>digital-7 (mono italic).ttf</string>
-		<string>Roboto-Regular.ttf</string>
-		<string>RobotoCondensed-Light.ttf</string>
-		<string>RobotoMono-VariableFont_wght.ttf</string>
 	</array>
 </dict>
 </plist>
