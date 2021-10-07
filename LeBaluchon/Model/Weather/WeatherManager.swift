@@ -38,6 +38,15 @@ class WeatherManager {
         performRequest(with: url, localize: localize)
     }
     
+    func fetchWeatherWithCity(_ name: String, iso: String) {
+        guard let url = getFetchWeatherUrlWithCityNamed(name, iso: iso) else {
+            delegate?.didFetchWeatherResult(weatherResult: .failure(.couldNotFetchWeatherDueToInvalidUrl), localize: false)
+            return
+        }
+        performRequest(with: url, localize: false)
+    }
+
+    
     private func getFetchWeatherUrl(longitude: Double, latitude: Double) -> URL? {
         var urlComponents = URLComponents()
         
@@ -54,6 +63,23 @@ class WeatherManager {
         
         return urlComponents.url
     }
+    
+    private func getFetchWeatherUrlWithCityNamed(_ name: String, iso: String) -> URL? {
+        var urlComponents = URLComponents()
+        
+        urlComponents.scheme = "https"
+        urlComponents.host = "api.openweathermap.org"
+        urlComponents.path = "/data/2.5/weather"
+        urlComponents.queryItems = [
+            .init(name: "appid", value: "87989bfd88e94b4e65c48b71104226db"),
+//            .init(name: "lang", value: "fr"),
+//            .init(name: "units", value: "metric"),
+            .init(name: "q", value: "\(name),\(iso)")
+        ]
+        
+        return urlComponents.url
+    }
+
     
     private func performRequest(with url: URL, localize: Bool) {
         

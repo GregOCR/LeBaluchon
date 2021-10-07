@@ -17,7 +17,7 @@ final class WeatherViewController: UIViewController {
     
     @IBOutlet private weak var cityIllustrationView: UIView!
     @IBOutlet private var weatherStackViews: [UIStackView]!
-    @IBOutlet weak var weatherInformationsComponentsStackView: UIStackView!
+    @IBOutlet private weak var weatherInformationsComponentsStackView: UIStackView!
     @IBOutlet private weak var whiteGradientImageView: UIImageView!
     
     @IBOutlet private weak var localizeYourselfImageView: UIImageView!
@@ -64,7 +64,6 @@ final class WeatherViewController: UIViewController {
         guard let selectedCity = selectedCity else { return }
         weatherManager.fetchWeather(longitude: selectedCity.longitude, latitude: selectedCity.latitude, localize: false)
         updateCityLocalData()
-
     }
     
     // set the color of the status bar content in white
@@ -75,8 +74,6 @@ final class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarController?.tabBarItem.image?.withTintColor(UIColor.red, renderingMode: .automatic)
-        print(tabBarItem.title!)
-        
         locationManager.delegate = self
         weatherManager.delegate = self
     }
@@ -127,7 +124,6 @@ final class WeatherViewController: UIViewController {
         alertController.addAction(okAlertAction)
         present(alertController, animated: true, completion: nil)
     }
-    
 }
 
 extension WeatherViewController: WeatherManagerDelegate {
@@ -166,9 +162,7 @@ extension WeatherViewController: WeatherManagerDelegate {
 }
 
 extension WeatherViewController: CLLocationManagerDelegate {
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
         if let location = locations.last {
             locationManager.stopUpdatingLocation()
             let longitude = location.coordinate.longitude
@@ -176,7 +170,6 @@ extension WeatherViewController: CLLocationManagerDelegate {
             weatherManager.fetchWeather(longitude: longitude, latitude: latitude, localize: true)
         }
     }
-    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
     }

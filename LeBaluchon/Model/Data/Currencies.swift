@@ -12,15 +12,16 @@ struct Currencies {
     static var shared = Currencies()
     
     var date = String()
-    var currentCountryCurrency: Currency = .init(isoCode: "EUR", description: "Euro (France)")
+    var currentCountryCurrency: Currency = .init(isoCode: "EUR", description: "Euro", dayRate: 1.0, IsoCountryCodesUsers: [""])
     
     var entries: [Currency] = [
-        .init(isoCode: "📍", description: "Devise du pays actuel"),
-        .init(isoCode: "€€€", description: "Euro"),
-        .init(isoCode: "$$$", description: "Dollar Américain"),
-        .init(isoCode: "£££", description: "Livre Sterling"),
-        .init(isoCode: "CAD", description: "Dollar Canadien"),
-        .init(isoCode: "YEN", description: "Yen Chinoise")
+        .init(isoCode: "📍", description: "", dayRate: 0.0, IsoCountryCodesUsers: [""]),
+        .init(isoCode: "€€€", description: "Euro", dayRate: 1.0, IsoCountryCodesUsers: [""]),
+        .init(isoCode: "$$$", description: "Dollar Américain", dayRate: 1.159978, IsoCountryCodesUsers: [""]),
+        .init(isoCode: "£££", description: "Livre Sterling", dayRate: 0.851256, IsoCountryCodesUsers: [""]),
+        .init(isoCode: "¥¥¥", description: "Yen Chinoise", dayRate: 0.0077, IsoCountryCodesUsers: [""]),
+        .init(isoCode: "－－－", description: "", dayRate: 0.0, IsoCountryCodesUsers: [""]),
+        .init(isoCode: "CAD", description: "Dollar Canadien", dayRate: 1.460453, IsoCountryCodesUsers: [""])
     ]
 }
 

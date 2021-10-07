@@ -20,6 +20,7 @@ class WeatherCityAddFavoriteViewController: UIViewController {
     
     var addFavDelegate: CityAddFavDelegate!
     var weatherViewController = WeatherViewController.shared
+    var weatherManager = WeatherManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,8 @@ class WeatherCityAddFavoriteViewController: UIViewController {
     @IBAction func addFavButton(_ sender: UIButton) {
         if cityTextField.text! != "" {
             self.notValidatedLabel.isHidden = true
+            weatherManager.fetchWeatherWithCity(cityTextField.text!, iso: isoCountryTextField.text!)
+
             print("add \(String(describing: cityTextField.text!))")
         } else {
             self.notValidatedLabel.isHidden = false
@@ -44,6 +47,12 @@ class WeatherCityAddFavoriteViewController: UIViewController {
         self.notValidatedLabel.isHidden = true
     }
     
+    private func displayAlert(error: WeatherManagerError) {
+        let alertController = UIAlertController(title: "E R R 〇 R", message: error.message, preferredStyle: .alert)
+        let okAlertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAlertAction)
+        present(alertController, animated: true, completion: nil)
+    }
     /*
      // MARK: - Navigation
      
@@ -62,4 +71,18 @@ extension WeatherCityAddFavoriteViewController: UITextFieldDelegate {
         cityTextField.endEditing(true)
     }
     
+}
+
+extension WeatherCityAddFavoriteViewController: WeatherManagerDelegate {
+    func didFetchWeatherResult(weatherResult: Result<WeatherModel, WeatherManagerError>, localize: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            switch weatherResult {
+            case .failure(let error):
+                self?.displayAlert(error: error)
+            case .success(let weather):
+                self?.isoCountryTextField.text = weather.countryIsoCode
+                print("done!")
+            }
+        }
+    }
 }
