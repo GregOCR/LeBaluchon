@@ -5,7 +5,9 @@
 //  Created by Greg on 01/09/2021.
 //
 
-// comment changer la couleur des éléments de  la tabView lorsque je clique sur une autre section
+// comment utiliser le weatherManager dans le cityAdd
+// comment rajouter des villes dans la fav de façon persistente
+// comment savoir lorsque les données sont récupérées et pouvoir ainsi admettre certaines actions ? (errors?)
 
 import UIKit
 import CoreLocation
@@ -165,6 +167,7 @@ extension WeatherViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             locationManager.stopUpdatingLocation()
+            
             let longitude = location.coordinate.longitude
             let latitude = location.coordinate.latitude
             weatherManager.fetchWeather(longitude: longitude, latitude: latitude, localize: true)

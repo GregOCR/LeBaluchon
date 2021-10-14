@@ -11,5 +11,5 @@ struct Currency {
     let isoCode: String
     let description: String
     let dayRate: Double
-    let IsoCountryCodesUsers: [String]
+    let isoCodeUsers: [String]
 }

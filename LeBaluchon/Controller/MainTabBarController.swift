@@ -14,6 +14,14 @@ class MainTabBarController: UITabBarController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+//        guard let firstItem = tabBar.items?.first else {
+//            return print("problem")
+//        }
+//        firstItem.image = UIImage(systemName: "sun.max")
+//        firstItem.selectedImage = UIImage(systemName: "sun.max")
+        
+        
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

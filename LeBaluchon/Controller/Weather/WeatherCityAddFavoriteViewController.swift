@@ -67,7 +67,7 @@ class WeatherCityAddFavoriteViewController: UIViewController {
 
 extension WeatherCityAddFavoriteViewController: UITextFieldDelegate {
     
-    @IBAction func searchPressed(_ sender: UIButton) {
+    @IBAction func addPressed(_ sender: UIButton) {
         cityTextField.endEditing(true)
     }
     

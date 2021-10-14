@@ -11,7 +11,7 @@ struct ElementIdentifier {
     
     static let named = ElementIdentifier()
     
-    // views
+    // storyboards
     let weatherCitiesListStoryboard = "weatherCitiesListStoryboard"
     let weatherAddFavoriteStoryboard = "weatherAddFavoriteStoryboard"
     let translatorSentencesListStoryboard = "translatorSentencesListStoryboard"
