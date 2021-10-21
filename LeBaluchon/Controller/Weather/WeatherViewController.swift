@@ -83,13 +83,11 @@ final class WeatherViewController: UIViewController {
     private func switchWeatherViewComponentsToNormal() {
         localizeYourselfImageView.isHidden = true
         cityIllustrationView.alpha = 0.5
-        weatherInformationsComponentsStackView.alpha = 1
         whiteGradientImageView.isHidden = true
         weatherStackViews.forEach { $0.isHidden = false }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-
         // set full current date to label in date view
         currentDateLabel.text = dateManager.getFormattedDate(.FullCurrentDate).uppercased()
     }
@@ -136,7 +134,7 @@ extension WeatherViewController: WeatherManagerDelegate {
                 self?.displayAlert(error: error)
                 
             case .success(let weather):
-                // IF fetch weather is localize, city name is json city name ELSE city name is local database city name
+                // If fetch weather is localize, city name is json city name ELSE city name is local database city name
                 if localize == true {
                     self?.cityNameButton.setTitle(weather.cityName, for: .normal)
                 } else {
@@ -153,11 +151,12 @@ extension WeatherViewController: WeatherManagerDelegate {
                 self?.todaySunsetTimeLabel.text = weather.todaySunsetTime
                 self?.currentPressureLabel.text = weather.todayPressure
                 self?.currentHumidityLabel.text = weather.todayHumidity
-                if weather.cityIsDayTime {
+                if weather.cityIsDayTime { // if the city time is in night, the weather picto color is dark blue, else white
                     self?.weatherPictoImage.tintColor = UIColor.white
                 } else {
                     self?.weatherPictoImage.tintColor = Color.shared.darkWeatherColor
                 }
+                self?.weatherInformationsComponentsStackView.alpha = 1
             }
         }
     }

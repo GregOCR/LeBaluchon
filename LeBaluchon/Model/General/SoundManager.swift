@@ -8,26 +8,46 @@
 import AVFoundation
 
 class SoundManager {
+    init() {
+        
+        var audioPlayers: [SoundType: AVAudioPlayer?] = [:]
+        
+        for soundType in SoundType.allCases {
+            let audioPlayer = createAudioPlayerFrom(soundType: soundType)
+            
+            audioPlayers[soundType] = audioPlayer
+        }
+        
+        self.audioPlayers = audioPlayers
+    }
+    
+    
+    private func createAudioPlayerFrom(soundType: SoundType) -> AVAudioPlayer? {
+        guard let path = Bundle.main.path(forResource: soundType.rawValue, ofType: nil) else { return  nil}
+        let url = URL(fileURLWithPath: path)
+        guard let audioPlayer = try? AVAudioPlayer(contentsOf: url) else { return nil }
+        audioPlayer.prepareToPlay()
+        return audioPlayer
+    }
+    
 
     static let shared = SoundManager()
     
-    private var soundToPlay: AVAudioPlayer?
+    private var audioPlayers: [SoundType: AVAudioPlayer?] = [:]
     
-    enum SoundType: String {
+    
+
+    
+    
+    enum SoundType: String, CaseIterable {
         case Printer = "printer.mp3"
         case Paper = "paper.mp3"
         case Woop = "woop.mp3"
     }
     
     func play(_ soundName: SoundType) {
-        let path = Bundle.main.path(forResource: soundName.rawValue, ofType:nil)!
-        let url = URL(fileURLWithPath: path)
-        do {
-            self.soundToPlay = try AVAudioPlayer(contentsOf: url)
-            self.soundToPlay?.play()
-        } catch {
-            return
-        }
+        guard let audioPlayer = audioPlayers[soundName] else { return }
+        audioPlayer?.play()
     }
 }
 

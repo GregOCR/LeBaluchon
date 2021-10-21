@@ -9,12 +9,7 @@ import Foundation
 
 struct City {
     let name: String
+    let countryIsoCode: String
     let longitude: Double
     let latitude: Double
-    let country: Country
-}
-
-struct Country {
-    let name: String
-    let isoCode: String
 }

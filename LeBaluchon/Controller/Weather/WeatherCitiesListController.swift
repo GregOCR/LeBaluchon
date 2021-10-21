@@ -13,45 +13,30 @@ protocol CitySelectionDelegate: AnyObject {
 
 class WeatherCitiesListController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    private var cities: [City] = [
-        .init(name: "Paris", longitude: 2.3488, latitude: 48.8534, country: .init(name: "FRANCE", isoCode: "FR")),
-        .init(name: "New York", longitude: -74.006, latitude: 40.7143, country: .init(name: "ÉTATS-UNIS", isoCode: "US")),
-        .init(name: "Strasbourg", longitude: 7.743, latitude: 48.5834, country: .init(name: "FRANCE", isoCode: "FR"))
-    ]
-    
     weak var selectionDelegate: CitySelectionDelegate!
     
     @IBOutlet weak var citiesTableView: UITableView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.citiesTableView.tableFooterView = UIView.init(frame: .zero)
-        self.citiesTableView.dataSource = self
-        self.citiesTableView.delegate = self
-        
+    @IBAction func deleteRow(_ sender: UIButton) {
+        let point = sender.convert(CGPoint.zero, to: citiesTableView)
+        guard let indexPath = citiesTableView.indexPathForRow(at: point) else { return }
+        Cities.shared.entries.remove(at: indexPath.row)
+        citiesTableView.deleteRows(at: [indexPath], with: .left)
     }
     
-    @objc func deleteRow(_ sender: UIButton) {
-        let point = sender.convert(CGPoint.zero, to: citiesTableView)
-        guard let indexPath = citiesTableView.indexPathForRow(at: point) else {
-            return
-        }
-        cities.remove(at: indexPath.row)
-        self.citiesTableView.deleteRows(at: [indexPath], with: .left)
-    }
-
     @IBAction func dismiss() {
         dismiss(animated: true, completion: nil)
     }
-
-    @IBAction func addRow(_ sender: UIButton) {
-//        cities.insert(contentsOf: ["Annecy":"(FR) France"], at: 0)
-//        self.citiesTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        citiesTableView.tableFooterView = UIView.init(frame: .zero)
+        citiesTableView.dataSource = self
+        citiesTableView.delegate = self
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cities.count
+        return Cities.shared.entries.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -59,32 +44,20 @@ class WeatherCitiesListController: UIViewController, UITableViewDataSource, UITa
             return UITableViewCell()
         }
         
-        let city = cities[indexPath.row]
+        let city = Cities.shared.entries[indexPath.row]
         weatherCityCell.configure(city: city)
-            
+        
         return weatherCityCell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 65
+        return 60
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let city = cities[indexPath.row]
+        let city = Cities.shared.entries[indexPath.row]
         selectionDelegate?.didSelect(city: city)
-        self.dismiss()
+        dismiss()
     }
-
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
 

@@ -76,7 +76,7 @@
                                                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="30"/>
                                                             </imageView>
                                                         </subviews>
-                                                        <color key="backgroundColor" red="1" green="0.57810515169999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="backgroundColor" red="0.2941176593" green="0.49019610879999997" blue="0.4352940917" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <constraints>
                                                             <constraint firstItem="pB1-NG-sTa" firstAttribute="centerX" secondItem="XGx-Db-kRL" secondAttribute="centerX" id="2TB-Bf-ex9"/>
                                                             <constraint firstItem="pB1-NG-sTa" firstAttribute="centerY" secondItem="XGx-Db-kRL" secondAttribute="centerY" id="veO-Zn-NLO"/>

@@ -16,7 +16,7 @@
 		37544CF126F87B4F0007463C /* VibrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37544CF026F87B4F0007463C /* VibrationManager.swift */; };
 		3754A8482701BF480013C402 /* SF-Compact-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3754A8472701BF480013C402 /* SF-Compact-Display-Regular.otf */; };
 		37580D8427006E3A0080FB6D /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37580D8327006E3A0080FB6D /* Currency.swift */; };
-		3775460C26E3DE2A005E0099 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37D16D9826E3D89A002931FE /* Main.storyboard */; };
+		3775460C26E3DE2A005E0099 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37D16D9826E3D89A002931FE /* Main.storyboard */; settings = {ASSET_TAGS = (overViewSafeArea, ); }; };
 		377C41C726E3DFA100D06ACE /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377C41C526E3DFA100D06ACE /* DateManager.swift */; };
 		377C41D026E3DFAC00D06ACE /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377C41C926E3DFAC00D06ACE /* MainTabBarController.swift */; };
 		377C41D126E3DFAC00D06ACE /* TranslatorTranslateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377C41CA26E3DFAC00D06ACE /* TranslatorTranslateViewController.swift */; };
@@ -307,6 +307,9 @@
 		37D16D8726E3D89A002931FE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					overViewSafeArea,
+				);
 				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {

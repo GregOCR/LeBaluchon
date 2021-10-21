@@ -11,11 +11,9 @@ class WeatherCitySelectionTableViewCell: UITableViewCell {
 
     @IBOutlet private weak var cityNameLabel: UILabel!
     @IBOutlet private weak var cityCountryIsoLabel: UILabel!
-    @IBOutlet private weak var cityCountryNameLabel: UILabel!
 
     func configure(city: City) {
         cityNameLabel.text = city.name
-        cityCountryIsoLabel.text = city.country.isoCode
-        cityCountryNameLabel.text = city.country.name
+        cityCountryIsoLabel.text = city.countryIsoCode
     }
 }
