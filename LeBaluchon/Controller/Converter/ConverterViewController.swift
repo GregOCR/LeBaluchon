@@ -18,136 +18,79 @@ class ConverterViewController: UIViewController {
     
     @IBOutlet private weak var currentDateLabel: UILabel!
     
-    @IBOutlet private weak var ticketDateTimeLabel: UILabel!
-    @IBOutlet private weak var ticketChangeLabel: UILabel!
-    
+    @IBOutlet private weak var overAllView: UIView!
     @IBOutlet private weak var blurOverShareView: UIView!
     @IBOutlet private weak var centerShareView: UIView!
+    
     @IBOutlet private weak var tabBarBlurVisualEffectView: UIVisualEffectView!
     
+    @IBOutlet private weak var firstCurrencyPickerView: UIPickerView!
+    @IBOutlet private weak var secondCurrencyPickerView: UIPickerView!
+    
+    @IBOutlet private weak var firstCurrencyDescriptionLabel: UILabel!
+    @IBOutlet private weak var firstCurrencyAmountLabel: UILabel!
+    
+    @IBOutlet private weak var secondCurrencyDescriptionLabel: UILabel!
+    @IBOutlet private weak var secondCurrencyRateLabel: UILabel!
+    @IBOutlet private weak var secondCurrencyAmountLabel: UILabel!
+    
     @IBOutlet private weak var ticketView: UIView!
-    @IBOutlet private weak var overAllView: UIView!
     
-    @IBOutlet private var currencyPickerViews: [UIPickerView]!
+    @IBOutlet private weak var ticketDateTimeLabel: UILabel!
+    @IBOutlet private weak var ticketCurrencyUnitRateLabel: UILabel!
     
-    @IBOutlet private var currencyDescriptionLabels: [UILabel]!
-    @IBOutlet private var currencyAmountLabels: [UILabel]!
-    @IBOutlet private var currencyRateLabels: [UILabel]!
+    @IBOutlet private weak var ticketFirstCurrencyIsoLabel: UILabel!
+    @IBOutlet private weak var ticketFirstCurrencyAmountLabel: UILabel!
+    @IBOutlet private weak var ticketFirstCurrencyDescriptionLabel: UILabel!
     
-    @IBOutlet private var ticketCurrencyISOLabels: [UILabel]!
-    @IBOutlet private var ticketCurrencyAmountLabels: [UILabel]!
-    @IBOutlet private var ticketCurrencyDescriptionLabels: [UILabel]!
+    @IBOutlet private weak var ticketSecondCurrencyIsoLabel: UILabel!
+    @IBOutlet private weak var ticketSecondCurrencyAmountLabel: UILabel!
+    @IBOutlet private weak var ticketSecondCurrencyDescriptionLabel: UILabel!
     
-    @IBOutlet weak var refreshRatesButton: UIButton!
-    @IBOutlet weak var refreshRatesActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var refreshRatesButton: UIButton!
+    @IBOutlet private weak var refreshRatesActivityIndicator: UIActivityIndicatorView!
     
     // MARK: Interface Builder - Actions
     
     @IBAction private func didTapNumberButton(_ sender: UIButton) {
-        Vibration.For.numbersAndDotButtons.perform()
+        hapticManager.triggerVibration(.numbersAndSymbolButtons)
         
         guard let entry = sender.title(for: .normal) else { return }
-        
-        if amountToConvert == "0" {
-            if entry != "." {
-                amountToConvert = entry
-            } else {
-                amountToConvert = "0."
-            }
-        } else {
-            if entry == "." {
-                if !amountToConvert.contains(".") {
-                    amountToConvert += entry
-                }
-                return
-            }
-            guard !amountToConvertIsComplete() else { return }
-            amountToConvert += entry
-        }
+        setDelegateNumberOrSymbol(entry)
     }
     
-    func amountToConvertIsComplete() -> Bool {
-        var result = false
-        if amountToConvert.contains(".") {
-            let dotSplitAmount = amountToConvert.split(separator: ".")
-            // if amount to convert is 2 numbers after coma, return amountToConvert is complete
-            if dotSplitAmount.count == 2 && dotSplitAmount.last?.count == 2 {
-                result = true
-            }
-        } else {
-            guard amountToConvert.count < 8 else { return true }
-        }
-        return result
+    
+    @IBAction private func didTapACButton(_ sender: UIButton) {
+        hapticManager.triggerVibration(.acResetButton)
+        //        resetAmounts()
     }
     
     @IBAction private func didTapSwapCurrenciesButton(_ sender: UIButton) {
-        currencyPickerViewsPosition.swapAt(0, 1)
-    }
-    
-    @IBAction private func didTapACButton(_ sender: UIButton) {
-        Vibration.For.acResetButton.perform()
-        resetCalculation()
+        hapticManager.triggerVibration(.calcScreenButtons)
+        swapCurrencies()
     }
     
     @IBAction private func didTapGetTicketButton(_ sender: UIButton) {
-        if converterHasAResult() {
-            updateTicketData()
-            overAllView.alpha = 1
-            UIView.animate(withDuration: 1.25) { [self] in
-                ticketView.frame.origin.y = centerShareView.frame.origin.y + 20
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) { [self] in
-                UIView.animate(withDuration: 0.25) { [self] in
-                    blurOverShareView.alpha = 1
-                }
-            }
-            //            soundManager.play(.Printer)
-        } else {
-            self.popUpAlert(title: "Ticket", message: "Veuillez indiquer UN MONTANT\npour obtenir un ticket\ndu résultat de la conversion.", asActionSheet: false, autoDismissTime: 0.0)
-        }
+        hapticManager.triggerVibration(.calcScreenButtons)
+        guard !amountToConvertIsZero else { return }
+        //        getTicket()
     }
     
     @IBAction private func didSwipeUpTicketGestureRecognizer(_ sender: UISwipeGestureRecognizer) {
-        UIView.animate(withDuration: 0.33) { [self] in
-            ticketView.frame.origin.y = 0 - ticketView.frame.height
-            //            soundManager.play(.Woop)
-        }
-        UIView.animate(withDuration: 0.25) { [self] in
-            blurOverShareView.alpha = 0
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-            shareTicket(asImage: renderImageTicket())
-            overAllView.alpha = 0
-            ticketView.frame.origin.y = view.frame.size.height
-        }
+        shareTicket()
     }
     
     @IBAction private func didSwipeDownTicketGestureRecognizer(_ sender: UISwipeGestureRecognizer) {
-        UIView.animate(withDuration: 0.33) { [self] in
-            ticketView.frame.origin.y = view.frame.size.height + 37
-            //            soundManager.play(.Woop)
-        }
-        UIView.animate(withDuration: 0.25) { [self] in
-            blurOverShareView.alpha = 0
-        }
-        //        DispatchQueue.main.asyncAfter(deadline: .now() + 0.20) { [self] in
-        //            soundManager.play(.Paper)
-        //        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-            overAllView.alpha = 0
-        }
+        cancelTicketToShare()
     }
     
     @IBAction private func didTapCopyInClipboardButton(_ sender: UIButton) {
-        if converterHasAResult() {
-            self.popUpAlert(title: "COPIÉ ✔︎", message: "Résultat dans le presse-papier.", asActionSheet: false, autoDismissTime: 2.0)
-            UIPasteboard.general.string = getStringOfAmountCalculation()
-        } else {
-            self.popUpAlert(title: "Copie / presse-papier", message: "Veuillez indiquer UN MONTANT\npour pouvoir copier\nle résultat de la conversion\ndans le presse-papier.", asActionSheet: false, autoDismissTime: 0.0)
-        }
+        hapticManager.triggerVibration(.calcScreenButtons)
+        copyTicketInClipboard()
     }
     
     @IBAction private func didTapRefreshCurrenciesRatesButton(_ sender: UIButton) {
+        hapticManager.triggerVibration(.calcScreenButtons)
         refreshRatesButton.alpha = 0
         refreshRatesActivityIndicator.alpha = 1
     }
@@ -161,17 +104,28 @@ class ConverterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        userDefaults.set([1,2], forKey: "currencyPickerViewsPosition")
-        calculator.delegate = self
+        
         ticketView.layer.shadowColor = Color.shared.darkConverterColor.cgColor
-        getCurrencyPickerViewsPosition()
-        updateCurrenciesData()
-        resetCalculation()
+        
+        firstCurrencyPickerView.delegate = self
+        secondCurrencyPickerView.delegate = self
+
+        converterManager.delegate = self
+        
+        
+        //        userDefaults.set([1,2], forKey: "currencyPickerViewsPosition")
+        //        getCurrencyPickerViewsPosition()
+        //        updateCurrenciesData()
+        //        resetCalculation()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        refreshDate()
+        
+        updatePickerViewsRow()
+        getDelegateCurrencyInformations()
+        
+        self.currentDateLabel.text = DateManager.shared.refreshDate()
     }
     
     // MARK: - Properties
@@ -181,158 +135,142 @@ class ConverterViewController: UIViewController {
     private let currencyPath = Currencies.shared.entries
     
     private let dateManager = DateManager.shared
+    
     private let soundManager = SoundManager.shared
     
-    private let calculator = Calculator()
+    private let hapticManager = HapticManager.shared
     
-    private var amountToConvert = "0" {
+    private let converterManager = ConverterManager()
+    
+    private var lastUpdatedPickerView: CurrencyNumber = .firstAndSecond
+    
+    private var currencyPickerViewRows: [CurrencyNumber: Int] = [.first: 0, .second: 1] {
         didSet {
-            updateAmountToConvert()
-            updateCalculation()
+            getDelegateCurrencyInformations()
         }
     }
     
-    private var currencyPickerViewsPosition = [1,2] {
-        didSet {
-            updateCurrenciesData()
-            updateCalculation()
-        }
+    private var amountToConvertIsZero: Bool {
+        guard firstCurrencyAmountLabel.text?.asDouble() != 0 else { return false }
+        return true
     }
     
     // MARK: - Methods
     
-    func updateCurrenciesData() {
-        getCurrencyPickerViewsPosition()
-        getCurrenciesData()
-    }
     
-    func getCurrencyPickerViewsPosition() {
-        for currencyPickerView in 0...1 {
-            currencyPickerViews[currencyPickerView].selectRow(currencyPickerViewsPosition[currencyPickerView], inComponent: 0, animated: true)
+    
+    private func shareTicket() {
+        UIView.animate(withDuration: 0.33) { [self] in
+            ticketView.frame.origin.y = 0 - ticketView.frame.height
+            soundManager.play(.Woop)
+        }
+        UIView.animate(withDuration: 0.25) { [self] in
+            blurOverShareView.alpha = 0
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+            shareTicket(asImage: renderImageTicket())
+            overAllView.alpha = 0
+            ticketView.frame.origin.y = view.frame.size.height
         }
     }
     
-    func getCurrenciesData() {
-        getCurrencyDescriptions()
-        getCurrencyRateToConvert()
-    }
-    
-    func getCurrencyDescriptions() {
-        for currencyPickerView in 0...1 {
-            let currencyDescription = currencyPath[currencyPickerViewsPosition[currencyPickerView]].description
-            currencyDescriptionLabels[currencyPickerView].text = currencyDescription
+    private func cancelTicketToShare() {
+        UIView.animate(withDuration: 0.33) { [self] in
+            ticketView.frame.origin.y = view.frame.size.height + 37
+            soundManager.play(.Woop)
+        }
+        UIView.animate(withDuration: 0.25) { [self] in
+            blurOverShareView.alpha = 0
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.20) { [self] in
+            soundManager.play(.Paper)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+            overAllView.alpha = 0
         }
     }
     
-    func checkIfPickerViewPointerIsAllowed(forCurrencyPickerViewTag pickerTag: Int) {
-        let pickerViewPointer = currencyPath[currencyPickerViewsPosition[pickerTag]].isoCode
-        var pickerViewPosition = currencyPickerViewsPosition[pickerTag] {
-            didSet {
-                currencyPickerViewsPosition[pickerTag] = pickerViewPosition
-            }
-        }
-        if pickerViewPointer == "📍" {
-            pickerViewPosition = getPickerViewPositionForLocalizedCountryCurrency()
-        }
-        if pickerViewPointer == "－－－" ||
-            (currencyPickerViewsPosition.first == currencyPickerViewsPosition.last) {
-            if pickerViewPosition == currencyPath.count-1 {
-                pickerViewPosition -= 1
-            } else {
-                pickerViewPosition += 1
-            }
-            checkIfPickerViewPointerIsAllowed(forCurrencyPickerViewTag: pickerTag)
-        }
-    }
-    // get the currency of the current localized country
-    func getPickerViewPositionForLocalizedCountryCurrency() -> Int {
-        return 1
+    private func copyTicketInClipboard() {
+        
+        //        if converterHasAResult() {
+        //            self.popUpAlert(title: "COPIÉ ✔︎", message: "Résultat dans le presse-papier.", asActionSheet: false, autoDismissTime: 2.0)
+        //            UIPasteboard.general.string = getStringOfAmountCalculation()
+        //        } else {
+        //            self.popUpAlert(title: "Copie / presse-papier", message: "Veuillez indiquer UN MONTANT\npour pouvoir copier\nle résultat de la conversion\ndans le presse-papier.", asActionSheet: false, autoDismissTime: 0.0)
+        //        }
     }
     
-    func converterHasAResult() -> Bool {
-        guard amountToConvert != "0" else { return false }
-        return true
-    }
-    
-    func updateAmountToConvert() {
-        print(amountToConvert)
-        currencyAmountLabels.first?.text = String(format: "%.2f", amountToConvert.asDouble())
-    }
-    
-    func resetCalculation() {
-        amountToConvert = "0"
-    }
-    
-    func getIsoCode(_ isoCode: String) -> String {
-        var result: String
-        switch isoCode {
-        case "€€€": result = "EUR"
-        case "$$$": result = "USD"
-        case "£££": result = "GBP"
-        case "¥¥¥": result = "YEN"
-        default: result = isoCode.description
-        }
-        return result
-    }
-    
-    func getCurrencyIsoCode(forPickerView pickerView: Int) -> String {
-        return getIsoCode(currencyPath[currencyPickerViewsPosition[pickerView]].isoCode)
-    }
-    
-    private func updateTicketData() {
-        ticketDateTimeLabel.text = dateManager.getFormattedDate(.CurrentUTCTime)
-        ticketChangeLabel.text = "1 \(getCurrencyIsoCode(forPickerView: 0)) = \(String(format: "%.3f", rateCalculation())) \(getCurrencyIsoCode(forPickerView: 1))"
-        for position in 0...1 {
-            ticketCurrencyISOLabels[position].text = getCurrencyIsoCode(forPickerView: position)
-            ticketCurrencyAmountLabels[position].text = currencyAmountLabels[position].text
-            ticketCurrencyDescriptionLabels[position].text = currencyDescriptionLabels[position].text
+    private func checkPickerViewsViability() {
+        if currencyPickerViewRows[.first] == currencyPickerViewRows[.second] {
+            
         }
     }
     
-    func refreshDate() {
-        currentDateLabel.text = dateManager.getFormattedDate(.FullCurrentDate).uppercased()
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-            self.currentDateLabel.text = self.dateManager.getFormattedDate(.FullCurrentDate).uppercased()
-        }
+    
+//        private func updateCurrenciesInformations(forPickerView: String) {
+//            checkPickerViewsViability()
+//            converterManager.getCurrenciesInformations(first: first, second: second, forCurrency: currency)
+//
+//        }
+    
+    private func updatePickerViewsRow() {
+        guard let firstPicker = currencyPickerViewRows[.first],
+              let secondPicker = currencyPickerViewRows[.second]
+        else { return }
+        
+        self.firstCurrencyPickerView.selectRow(firstPicker, inComponent: 0, animated: true)
+        self.secondCurrencyPickerView.selectRow(secondPicker, inComponent: 0, animated: true)
+        getDelegateCurrencyInformations()
     }
     
-    func updateCalculation() {
-        if amountToConvert == "0" {
-            currencyAmountLabels.last?.text = "0.00"
-            return
-        } else {
-            let convertedAmount = rateCalculation() * amountToConvert.asDouble()
-            currencyAmountLabels.last?.text = String(format: "%.2f", convertedAmount)
-        }
+    private func swapCurrencies() {
+        let firstRow = currencyPickerViewRows[.first]
+        currencyPickerViewRows[.first] = currencyPickerViewRows[.second]
+        currencyPickerViewRows[.second] = firstRow
+        lastUpdatedPickerView = .firstAndSecond
+        updatePickerViewsRow()
     }
     
-    func rateCalculation() -> Double {
-        return currencyPath[currencyPickerViews[1].selectedRow(inComponent: 0)].dayRate/currencyPath[currencyPickerViews[0].selectedRow(inComponent: 0)].dayRate
+    private func getDelegateCurrencyInformations() {
+        let firstCurrency = currencyPickerViewRows[.first]!
+        let secondCurrency = currencyPickerViewRows[.second]!
+        converterManager.getCurrencyInformations(forCurrency: lastUpdatedPickerView, first: firstCurrency, second: secondCurrency)
     }
     
-    func getCurrencyRateToConvert() {
-        if currencyPath[currencyPickerViewsPosition.first!].dayRate != 0.0 {
-            currencyRateLabels.first?.text = "1.00"
-        }
-        if currencyPath[currencyPickerViewsPosition.last!].dayRate != 0.0 {
-            if currencyPath[currencyPickerViewsPosition.first!].dayRate == 0.0 {
-                currencyRateLabels.last?.text = "Choisir une devise de référence ▲"
-            } else {
-                currencyRateLabels.last?.text = String(format: "%.3f", rateCalculation())
-            }
-        }
-    }
-    
-    func getStringOfAmountCalculation() -> String {
-        return "\(amountToConvert) \(getCurrencyIsoCode(forPickerView: 0)) (\(String(describing: currencyDescriptionLabels[0].text!))) = \(String(describing: currencyAmountLabels[1].text!)) \(getCurrencyIsoCode(forPickerView: 1)) (\(String(describing: currencyDescriptionLabels[1].text!)))\n\n1 \(getCurrencyIsoCode(forPickerView: 0)) = \(String(format: "%.3f", rateCalculation())) \(getCurrencyIsoCode(forPickerView: 1))\nSource : fixer.io • \(dateManager.getFormattedDate(.CurrentUTCTime))"
+    private func setDelegateNumberOrSymbol(_ entry: String) {
+        converterManager.addNumberOrSymbol(entry)
     }
 }
 
 // MARK: - Extensions
 
-extension ConverterViewController: CalculatorProtocol {
-    func didUpdateOperation(operation: String) {
-        //        operationLabel.text = operation
+extension ConverterViewController: ConverterManagerDelegate {
+    func setInformations(forCurrency currencyNumber: CurrencyNumber, description: String, convertingRate: String) {
+        switch currencyNumber {
+        case .first:
+            self.firstCurrencyDescriptionLabel.text = description
+        case .second:
+            self.secondCurrencyDescriptionLabel.text = description
+        default:
+            return
+        }
+        self.secondCurrencyRateLabel.text = convertingRate
+    }
+    
+    func setAmountsForCurrencies(first firstAmount: String, second secondAmount: String) {
+        self.firstCurrencyAmountLabel.text = firstAmount
+        self.secondCurrencyAmountLabel.text = secondAmount
+        self.ticketFirstCurrencyAmountLabel.text = firstAmount
+        self.ticketSecondCurrencyAmountLabel.text = secondAmount
+    }
+    
+    func setTicketInformations(date: String, currencyRateToConvert: String, firstIso: String, firstDescription: String, secondIso: String, secondDescription: String) {
+        self.ticketDateTimeLabel.text = date
+        self.ticketCurrencyUnitRateLabel.text = "1 \(firstIso) = \(currencyRateToConvert) \(secondIso)"
+        self.ticketFirstCurrencyIsoLabel.text = firstIso
+        self.ticketSecondCurrencyIsoLabel.text = secondIso
+        self.ticketFirstCurrencyDescriptionLabel.text = firstDescription
+        self.ticketSecondCurrencyDescriptionLabel.text = secondDescription
     }
 }
 
@@ -344,20 +282,35 @@ extension ConverterViewController: UIPickerViewDelegate, UIPickerViewDataSource 
         return Currencies.shared.entries.count
     }
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        var pickerLabel = view as? UILabel
+        let pickerLabel = UILabel()
+        pickerLabel.font = UIFont(name: "Arial Rounded MT Bold", size: 20)
+        pickerLabel.textColor = UIColor.white
+        pickerLabel.textAlignment = NSTextAlignment.center
+        pickerLabel.text = getPickerLabelText(forRow: row)
         
-        if (pickerLabel == nil) {
-            pickerLabel = UILabel()
-            pickerLabel?.font = UIFont(name: "Arial Rounded MT Bold", size: 20)
-            pickerLabel?.textColor = UIColor.white
-            pickerLabel?.textAlignment = NSTextAlignment.center
-        }
-        pickerLabel?.text = currencyPath[row].isoCode
-        return pickerLabel!
+        return pickerLabel
     }
+    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        currencyPickerViewsPosition[pickerView.tag] = pickerView.selectedRow(inComponent: 0)
-        checkIfPickerViewPointerIsAllowed(forCurrencyPickerViewTag: pickerView.tag)
+        let currencyNumber = getCurrencyNumber(forPickerTag: pickerView.tag)
+        currencyPickerViewRows[currencyNumber] = row
+        lastUpdatedPickerView = currencyNumber
+    }
+    
+    private func getPickerLabelText(forRow row: Int) -> String {
+        var pickerRowLabel = currencyPath[row].isoCode
+        if currencyPath[row].isoSymbol != "" {
+            pickerRowLabel = currencyPath[row].isoSymbol
+        }
+        return pickerRowLabel
+    }
+    
+    private func getCurrencyNumber(forPickerTag tag: Int) -> CurrencyNumber {
+        var pickerViewNumber: CurrencyNumber = .first
+        if tag == 1 {
+            pickerViewNumber = .second
+        }
+        return pickerViewNumber
     }
 }
 

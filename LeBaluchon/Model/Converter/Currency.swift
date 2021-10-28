@@ -9,7 +9,7 @@ import Foundation
 
 struct Currency {
     let isoCode: String
+    let isoSymbol: String
     let description: String
-    let dayRate: Double
-    let isoCodeUsers: [String]
+    let rate: Double
 }

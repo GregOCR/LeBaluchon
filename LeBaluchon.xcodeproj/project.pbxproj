@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		37068E0A270F127300F2A888 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37068E09270F127300F2A888 /* Calculator.swift */; };
+		37068E0A270F127300F2A888 /* ConverterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37068E09270F127300F2A888 /* ConverterManager.swift */; };
 		3716539127075CE500398428 /* Sentences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3716539027075CE500398428 /* Sentences.swift */; };
 		373CBD6C26FC939F0075BCAD /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373CBD6B26FC939F0075BCAD /* City.swift */; };
 		373CBD6E26FD23930075BCAD /* ColorLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373CBD6D26FD23930075BCAD /* ColorLayout.swift */; };
@@ -50,7 +50,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		37068E09270F127300F2A888 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
+		37068E09270F127300F2A888 /* ConverterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterManager.swift; sourceTree = "<group>"; };
 		3716539027075CE500398428 /* Sentences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sentences.swift; sourceTree = "<group>"; };
 		373CBD6B26FC939F0075BCAD /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = City.swift; path = LeBaluchon/Controller/Weather/City.swift; sourceTree = SOURCE_ROOT; };
 		373CBD6D26FD23930075BCAD /* ColorLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorLayout.swift; sourceTree = "<group>"; };
@@ -175,7 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				37580D8327006E3A0080FB6D /* Currency.swift */,
-				37068E09270F127300F2A888 /* Calculator.swift */,
+				37068E09270F127300F2A888 /* ConverterManager.swift */,
 			);
 			path = Converter;
 			sourceTree = "<group>";
@@ -379,7 +379,7 @@
 				377C41D326E3DFAC00D06ACE /* ConverterViewController.swift in Sources */,
 				37B289A326F0FAA10098D363 /* Currencies.swift in Sources */,
 				37580D8427006E3A0080FB6D /* Currency.swift in Sources */,
-				37068E0A270F127300F2A888 /* Calculator.swift in Sources */,
+				37068E0A270F127300F2A888 /* ConverterManager.swift in Sources */,
 				37E53DA82715AD490050ABD2 /* Extensions.swift in Sources */,
 				373CBD7226FD82FB0075BCAD /* ElementIdentifier.swift in Sources */,
 				373DDA4F2712F7F400069AD6 /* ToolsKit.swift in Sources */,

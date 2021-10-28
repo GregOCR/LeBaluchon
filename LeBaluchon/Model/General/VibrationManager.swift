@@ -8,31 +8,33 @@
 import UIKit
 import AudioToolbox
 
-struct Vibration {
+class HapticManager {
+    static let shared = HapticManager()
     
-    enum For {
-        
-        case numbersAndDotButtons, calcScreenButtons, printer, acResetButton
-        
-        internal func perform() {
-            switch self {
-            case .numbersAndDotButtons:
-                if #available(iOS 13.0, *) {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                } else {
-                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                }
-            case .calcScreenButtons:
-                if #available(iOS 13.0, *) {
-                    UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
-                } else {
-                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                }
-            case .printer:
-                AudioServicesPlaySystemSound(1521)
-            case .acResetButton:
-                UINotificationFeedbackGenerator().notificationOccurred(.warning)
+    func triggerVibration(_ vibration: Vibration) {
+        switch vibration {
+        case .numbersAndSymbolButtons:
+            if #available(iOS 13.0, *) {
+                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+            } else {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
             }
+        case .calcScreenButtons:
+            if #available(iOS 13.0, *) {
+                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+            } else {
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            }
+        case .printer:
+            AudioServicesPlaySystemSound(1521)
+        case .acResetButton:
+            UINotificationFeedbackGenerator().notificationOccurred(.warning)
         }
+        
     }
 }
+
+enum Vibration {
+    case numbersAndSymbolButtons, calcScreenButtons, printer, acResetButton
+}
+

@@ -12,18 +12,15 @@ struct Currencies {
     static var shared = Currencies()
     
 //    var date = String()
-    var date = "dateManager.getFormattedDate(.CurrentUTCTime)"
-    var currentCountryCurrency: Currency = .init(isoCode: "EUR", description: "Euro", dayRate: 1.0, isoCodeUsers: [""])
-    
+    var date = "dateManager.getFormattedDate(.CurrentUTCTime)"    
     var entries: [Currency] = [
-        .init(isoCode: "📍", description: "", dayRate: 0.0, isoCodeUsers: [""]),
-        .init(isoCode: "€€€", description: "Euro", dayRate: 1.0, isoCodeUsers: [""]),
-        .init(isoCode: "$$$", description: "Dollar Américain", dayRate: 1.159051, isoCodeUsers: [""]),
-        .init(isoCode: "£££", description: "Livre Sterling", dayRate: 0.848367, isoCodeUsers: [""]),
-        .init(isoCode: "¥¥¥", description: "Yen Chinoise", dayRate: 131.563266, isoCodeUsers: [""]),
-        .init(isoCode: "－－－", description: "", dayRate: 0.0, isoCodeUsers: [""]),
-        .init(isoCode: "CAD", description: "Dollar Canadien", dayRate: 1.441221, isoCodeUsers: [""]),
-        .init(isoCode: "AED", description: "Dirham des Émirats arabes unis", dayRate: 4.273157, isoCodeUsers: [""]),
-        .init(isoCode: "TRY", description: "Lire Turque", dayRate: 10.642451, isoCodeUsers: [""])
+        .init(isoCode: "EUR", isoSymbol: "€€€", description: "Euro", rate: 1.0),
+        .init(isoCode: "USD", isoSymbol: "$$$", description: "Dollar Américain", rate: 1.159051),
+        .init(isoCode: "GBP", isoSymbol: "£££", description: "Livre Sterling", rate: 0.848367),
+        .init(isoCode: "YEN", isoSymbol: "¥¥¥", description: "Yen Chinoise", rate: 131.563266),
+        .init(isoCode: "", isoSymbol: "－－－", description: "", rate: 0),
+        .init(isoCode: "CAD", isoSymbol: "", description: "Dollar Canadien", rate: 1.441221),
+        .init(isoCode: "AED", isoSymbol: "", description: "Dirham Des Émirats Arabes Unis", rate: 4.273157),
+        .init(isoCode: "TRY", isoSymbol: "", description: "Lire Turque", rate: 10.642451)
     ]
 }

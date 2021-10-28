@@ -15,8 +15,12 @@ class DateManager {
         case FullCurrentDate, CurrentUTCTime
     }
     
+    func refreshDate() -> String {
+        return getFormattedDate(.FullCurrentDate).uppercased()
+    }
+    
     // get date as String
-    func getDate(withDateStyle dateStyle: DateFormatter.Style, withTimeStyle timeStyle: DateFormatter.Style) -> String {
+    private func getDate(withDateStyle dateStyle: DateFormatter.Style, withTimeStyle timeStyle: DateFormatter.Style) -> String {
         let date = Date()
         
         let dateFormatter = DateFormatter()
@@ -27,7 +31,7 @@ class DateManager {
         return dateFormatter.string(from: date)
     }
     // get formatted date information
-    func getFormattedDate(_ dateType: DateType) -> String {
+    private func getFormattedDate(_ dateType: DateType) -> String {
         var dateStyle: DateFormatter.Style = .short
         var timeStyle: DateFormatter.Style = .none
         

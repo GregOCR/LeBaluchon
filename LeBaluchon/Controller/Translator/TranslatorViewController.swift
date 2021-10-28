@@ -52,15 +52,11 @@ class TranslatorViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    func refreshDate() {
-        self.currentDateLabel.text = dateManager.getFormattedDate(.FullCurrentDate).uppercased()
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-            self.currentDateLabel.text = self.dateManager.getFormattedDate(.FullCurrentDate).uppercased()
-        }
-    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
-        self.refreshDate()
+        super.viewWillAppear(animated)
+//        self.refreshDate()
     }
     
     @IBAction func sentenceSelectButtonTap(_ sender: UIButton) {

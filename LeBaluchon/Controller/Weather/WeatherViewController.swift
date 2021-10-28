@@ -89,7 +89,7 @@ final class WeatherViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         // set full current date to label in date view
-        currentDateLabel.text = dateManager.getFormattedDate(.FullCurrentDate).uppercased()
+//        currentDateLabel.text = dateManager.getFormattedDate(.FullCurrentDate).uppercased()
     }
     
     @IBAction func localizeButtonTap(_ sender: UIButton) {        locationManager.requestWhenInUseAuthorization()
